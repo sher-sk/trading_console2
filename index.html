@@ -1185,12 +1185,13 @@ function renderAnalytics(){
   });
 
   // day of week
-  const dowNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  // const dowNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  // const dowNames = ['Mon','Tue','Wed','Thu','Fri'];
   const dowPnl = Array(7).fill(0), dowCount = Array(7).fill(0);
   TRADES.forEach(t=>{ const d=new Date(t.date).getDay(); dowPnl[d]+=t.pnl; dowCount[d]++; });
   makeChart('dowChart', {
     type:'bar',
-    data:{ labels:dowNames, datasets:[{ label:'Avg P&L', data:dowPnl.map((v,i)=>dowCount[i]?v/dowCount[i]:0), backgroundColor:dowPnl.map((v)=> v>=0?'#3FA672':'#C4544A') }]},
+    data:{ labels:DAY_D, datasets:[{ label:'Avg P&L', data:dowPnl.map((v,i)=>dowCount[i]?v/dowCount[i]:0), backgroundColor:dowPnl.map((v)=> v>=0?'#3FA672':'#C4544A') }]},
     options:{ plugins:{legend:{display:false}}, scales:{ x:{ticks:{color:themeTick()}, grid:{display:false}}, y:{ticks:{color:themeTick()}, grid:{color:themeGridColor()}} } }
   });
 
@@ -1250,7 +1251,7 @@ function renderAnalytics(){
     const captureRate = withPotential.reduce((a,t)=>a+t.pnl,0) / withPotential.reduce((a,t)=>a+t.rating.potentialPnl,0) * 100;
     insights.push(`On trades where you logged a target, you're capturing <b>${captureRate.toFixed(0)}%</b> of your rated potential P&amp;L on average — the gap is your exit-timing edge to close.`);
   }
-  const bestDow = dowNames.map((n,i)=>({n, avg: dowCount[i]?dowPnl[i]/dowCount[i]:-Infinity})).sort((a,b)=>b.avg-a.avg)[0];
+  const bestDow = DAY_D.map((n,i)=>({n, avg: dowCount[i]?dowPnl[i]/dowCount[i]:-Infinity})).sort((a,b)=>b.avg-a.avg)[0];
   if (bestDow && isFinite(bestDow.avg)) insights.push(`<b>${bestDow.n}</b> has been your strongest day by average P&amp;L.`);
   document.getElementById('insightList').innerHTML = insights.map(i=>`<div class="insight">${i}</div>`).join('') || '<div class="empty-state">Not enough data yet for insights.</div>';
 }
