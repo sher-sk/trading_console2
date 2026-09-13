@@ -57,6 +57,7 @@
     font-size:14px;
     display:flex; flex-direction:column;
     min-height:100vh;
+    overflow-x:hidden;
   }
   ::selection{ background:var(--gold-dim); color:#fff; }
 
@@ -85,7 +86,7 @@
   .nav-item:hover{ color:var(--text); background:var(--hover-tint); }
   .nav-item.active{ color:var(--gold); border-bottom-color:var(--gold); }
 
-  .topbar-actions{ margin-left:auto; display:flex; align-items:center; gap:12px; }
+  .topbar-actions{ margin-left:auto; display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:flex-end; }
   .load-status{ font-size:11px; color:var(--muted); font-family:'IBM Plex Mono', monospace; white-space:nowrap; }
   .import-row{ display:flex; align-items:center; gap:8px; }
   .import-btn{
@@ -133,7 +134,8 @@
     letter-spacing:-0.5px;
   }
   .hero-sub{ color:var(--muted); font-size:13px; margin-top:8px; }
-  .range-toggle{ display:flex; gap:6px; }
+  .range-toggle{ display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  .range-divider{ width:1px; height:20px; background:var(--border); margin:0 2px; }
   .range-toggle button{
     background:var(--panel); border:1px solid var(--border); color:var(--muted);
     padding:6px 12px; border-radius:var(--radius); font-size:12.5px; cursor:pointer;
@@ -146,7 +148,7 @@
     padding:20px; margin-bottom:24px;
   }
   #calendarWrap{
-    max-height: 600px;
+    max-height: 530px;
     overflow: auto;
   }
   .panel-title{ font-size:13px; color:var(--muted); margin-bottom:14px; font-weight:500; }
@@ -161,7 +163,7 @@
   .stat-card .value{ font-family:'IBM Plex Mono', monospace; font-size:20px; font-weight:500; }
   .stat-card .value.pos{ color:var(--green); }
   .stat-card .value.neg{ color:var(--red); }
-  .stat-card .value .stat-sub{ font-size:11px; color:var(--muted); font-weight:400; margin-left:4px; }
+  .stat-card .stat-sub{ font-size:12px; color:var(--muted); font-weight:400; margin-left:4px; margin-top: 2px;}
 
   .two-col{ display:grid; grid-template-columns:1.3fr 1fr; gap:20px; }
   @media (max-width:900px){ .two-col{ grid-template-columns:1fr; } }
@@ -233,16 +235,44 @@
   .tag.day{ background:var(--panel-2); color:var(--muted); border:1px solid var(--border); }
 
   .star-rating{ display:inline-flex; gap:4px; white-space:nowrap; }
-  .star-rating .star{ font-size:20px; line-height:1; color:var(--muted); opacity:0.35; }
+  .star-rating .star{ font-size:24px; line-height:1; color:var(--muted); opacity:0.35; }
   .star-rating .star.filled{ color:var(--gold); opacity:1; }
-  .detail-row td{ background:var(--panel-2); font-family:'IBM Plex Sans', sans-serif; }
-  .strike-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin:8px 0; }
-  .strike-card{ background:var(--panel); border:1px solid var(--border); border-radius:5px; padding:10px 12px; }
-  .strike-card .sym{ font-size:12px; color:var(--muted); margin-bottom:4px; }
-  .strike-card .row{ display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace; font-size:12px; }
-  .idx-row{ display:flex; gap:24px; flex-wrap:wrap; margin-top:10px; font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--muted); }
+  .detail-row td{ background:var(--panel-2); font-family:'IBM Plex Sans', sans-serif; padding:18px 20px; }
+  /* The trade-log table scrolls horizontally and can end up wider than the
+     viewport (long nowrap cells above). Without this, the colspanned detail
+     row would inherit that oversized width instead of the phone's actual
+     width. Capping to the viewport + sticking to the left edge keeps it
+     readable and in view regardless of how far the table is scrolled. */
+  .detail-wrap{ white-space:normal; position:sticky; left:0; }
+  .detail-title{ font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); font-weight:600; margin:16px 0 8px; }
+  .detail-title:first-child{ margin-top:0; }
+  .strike-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin:0; }
+  .strike-card{ background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:12px 14px; }
+  .strike-head{ display:flex; align-items:baseline; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+  .strike-sym{ font-weight:600; font-size:13px; }
+  .strike-meta{ font-size:11px; color:var(--muted); font-family:'IBM Plex Mono', monospace; white-space:nowrap; }
+  .strike-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:4px; background:var(--panel-2); border-radius:5px; padding:8px 4px; text-align:center; }
+  .ss-label{ display:block; font-size:10px; color:var(--muted); margin-bottom:3px; }
+  .ss-value{ display:block; font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:13px; }
+  .idx-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+  .idx-card{ background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:10px 12px; }
+  .idx-label{ font-size:11px; color:var(--muted); margin-bottom:6px; }
+  .idx-values{ font-family:'IBM Plex Mono', monospace; font-size:13px; display:flex; align-items:center; gap:6px; }
+  .idx-arrow{ color:var(--muted); }
+  .idx-delta{ font-family:'IBM Plex Mono', monospace; font-size:11.5px; margin-top:5px; }
+  .idx-delta.pos{ color:var(--green); }
+  .idx-delta.neg{ color:var(--red); }
 
-  .filters{ display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .filters{ display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; align-items:center; }
+  .seg-toggle{ display:inline-flex; background:var(--panel-2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+  .seg-toggle button{
+    background:transparent; border:none; border-right:1px solid var(--border);
+    color:var(--muted); padding:7px 14px; font-size:12px; font-weight:600;
+    letter-spacing:0.02em; cursor:pointer; font-family:inherit;
+  }
+  .seg-toggle button:last-child{ border-right:none; }
+  .seg-toggle button.active{ background:var(--panel); color:var(--gold); }
+  .seg-toggle button:hover:not(.active){ color:var(--text); }
   .filters select, .filters input{
     background:var(--panel-2); border:1px solid var(--border); color:var(--text);
     padding:7px 10px; border-radius:var(--radius); font-size:12.5px; font-family:inherit;
@@ -270,6 +300,50 @@
   }
   .cal-tooltip .t-date{ font-family:'IBM Plex Sans',sans-serif; color:var(--muted); font-size:11px; margin-bottom:4px; }
   .cal-tooltip b{ font-weight:500; }
+
+  /* ============================================================
+     Mobile responsiveness
+     ============================================================ */
+  .chart-panel, #calendarWrap, table{ -webkit-overflow-scrolling:touch; }
+
+  @media (max-width:900px){
+    .idx-grid{ grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); }
+  }
+
+  @media (max-width:760px){
+    .topbar-row{ flex-wrap:wrap; row-gap:10px; padding:10px 16px; }
+    .main-nav{ order:3; margin-left:0; width:100%; }
+    .topbar-actions{ order:2; }
+    .subnav-inner{ padding:0 16px; }
+    .main{ padding:0 16px 48px 16px; }
+  }
+
+  @media (max-width:640px){
+    .hero-number{ font-size:38px; }
+    .chart-panel{ padding:14px; }
+    .stat-grid{ grid-template-columns:repeat(auto-fit,minmax(135px,1fr)); }
+    .filters{ flex-direction:column; align-items:stretch; }
+    .filters select, .filters input{ width:100% !important; }
+    .filters .seg-toggle{ width:100%; }
+    .filters .seg-toggle button{ flex:1; }
+    .strike-grid{ grid-template-columns:1fr; }
+    .idx-grid{ grid-template-columns:repeat(2,1fr); }
+    .dot-month{ min-width:130px; padding:0 14px; }
+    /* Force the expanded month grid to keep readable column widths and scroll
+       horizontally inside #calendarWrap, rather than squeezing 6 columns flat. */
+    .grid-cal{ grid-template-columns:repeat(5, 92px) 92px; min-width:0; }
+    .grid-month{ overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px; }
+  }
+
+  @media (max-width:480px){
+    .brand{ font-size:17px; }
+    .load-status{ display:none; }
+    .import-btn{ padding:6px 9px; font-size:11px; }
+    .hero-number{ font-size:32px; }
+    .range-toggle button{ padding:5px 9px; font-size:11.5px; }
+    .stat-grid{ grid-template-columns:repeat(2,1fr); }
+    .idx-grid{ grid-template-columns:1fr; }
+  }
 </style>
 </head>
 <body class="light">
@@ -316,11 +390,16 @@
           <div class="hero-sub" id="heroSub">— trades recorded</div>
         </div>
         <div class="range-toggle" id="rangeToggle">
+          <button data-range="last10">10T</button>
+          <button data-range="last50">50T</button>
+          <button data-range="last100">100T</button>
+          <span class="range-divider"></span>
           <button data-range="30" class="active">30D</button>
           <button data-range="60">60D</button>
           <button data-range="90">90D</button>
           <button data-range="365">1Y</button>
           <button data-range="all">All</button>
+         
         </div>
       </div>
 
@@ -354,17 +433,19 @@
     <section id="sec-trades">
       <h2 class="section-h">Trade Log</h2>
       <div class="filters">
-        <select id="filterDir">
-          <option value="all">All directions</option>
-          <option value="CE">CE only</option>
-          <option value="PE">PE only</option>
-        </select>
-        <select id="filterResult">
-          <option value="all">All results</option>
-          <option value="win">Wins only</option>
-          <option value="loss">Losses only</option>
-        </select>
-        <input type="text" id="filterSearch" placeholder="Search date (YYYY-MM-DD)" />
+        <input type="text" id="filterSearch" placeholder="Search date (YYYY-MM-DD)" style="width:64%" />        
+        <select id="filterYear"></select>
+        <div class="seg-toggle" id="filterDir" data-value="all">
+          <button data-value="all" class="active">ALL</button>
+          <button data-value="CE">CE</button>
+          <button data-value="PE">PE</button>
+        </div>
+        <div class="seg-toggle" id="filterResult" data-value="all">
+          <button data-value="all" class="active">ALL</button>
+          <button data-value="win">WINS</button>
+          <button data-value="loss">LOSSES</button>
+        </div>
+        
       </div>
       <div class="chart-panel" style="overflow-x:auto;">
         <table id="tradeTable">
@@ -395,7 +476,7 @@
     <div class="insight-list" id="insightList" style="margin-bottom:24px;"></div>
 
     <div class="two-col">
-      <div class="chart-panel"><div class="panel-title">Win rate by direction (CE vs PE)</div><canvas id="dirChart" height="180"></canvas></div>
+      <div class="chart-panel"><div class="panel-title">Win rate by direction (CE vs PE)</div><canvas id="dirChart" height="110"></canvas></div>
       <div class="chart-panel"><div class="panel-title">Performance by day of week</div><canvas id="dowChart" height="180"></canvas></div>
     </div>
     <div class="two-col" style="margin-top:20px;">
@@ -533,6 +614,7 @@ document.querySelectorAll('#rangeToggle button').forEach(btn=>{
 /* ---------------- Helpers ---------------- */
 const fmtINR = n => '₹' + Math.round(n).toLocaleString('en-IN');
 const fmtShortDate = d => new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short' });
+const fmtShortDate3 = d => new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric'  });
 const fmtShortDate2 = d => new Date(d).toLocaleDateString('en-US', { month:'short', year:'numeric' });
 function starRating(n, max=3){
   n = n || 0;
@@ -544,6 +626,10 @@ function starRating(n, max=3){
 }
 const rangedTrades = () => {
   if (currentRange === 'all') return TRADES;
+  if (currentRange.startsWith('last')){
+    const n = parseInt(currentRange.replace('last',''),10);
+    return TRADES.slice(-n); // TRADES is already date-ascending, so this takes the N most recent trades
+  }
   const days = parseInt(currentRange,10);
   const cutoff = new Date(); cutoff.setDate(cutoff.getDate()-days);
   return TRADES.filter(t => new Date(t.date) >= cutoff);
@@ -673,11 +759,25 @@ function refreshChartTheme(){
 
 /* ---------------- Render orchestration ---------------- */
 function renderAll(){
+  populateYearFilter();
   renderOverview();
   renderCalendar();
   renderCalendar2();
   renderTradeTable();
   renderAnalytics();
+}
+
+/* Builds the Year filter options from whatever years exist in TRADES (plus the
+   current calendar year, even if no trades exist for it yet) and defaults the
+   selection to the current year every time fresh data loads. */
+function populateYearFilter(){
+  const sel = document.getElementById('filterYear');
+  const years = new Set(TRADES.map(t=>t.date.slice(0,4)));
+  const thisYear = String(new Date().getFullYear());
+  years.add(thisYear);
+  const sortedYears = Array.from(years).sort((a,b)=>b-a);
+  sel.innerHTML = `<option value="all">All years</option>` + sortedYears.map(y=>`<option value="${y}">${y}</option>`).join('');
+  sel.value = thisYear;
 }
 
 /* ---------------- Overview ---------------- */
@@ -702,15 +802,15 @@ function renderOverview(){
   const r = computeRiskRatios(trades, totalCapital, totalPnl);
 
   const cards = [
-    ['Win rate', winRate.toFixed(1)+'%', winRate>=50?'pos':'neg',""],
-    ['Avg P&L / trade', fmtINR(avgPnl), avgPnl>=0?'pos':'neg',""],
-    ['Profit factor', r ? (isFinite(r.profitFactor)?r.profitFactor.toFixed(2):'∞') : '—', (r && r.profitFactor>=1.5)?'pos':'neg', "> 1.5 to 2.0 - gross wins heavily outpacing gross losses?"],
-    ['Capital efficiency', capitalEff.toFixed(2)+'%', capitalEff>=0?'pos':'neg',"totalPnl/totalCapital*100"],
-    ['Best trade', best?`${fmtINR(best.pnl)}<span class="stat-sub">${fmtShortDate(best.date)}</span>`:'—', 'pos',""],
-    ['Worst trade', worst?`${fmtINR(worst.pnl)}<span class="stat-sub">${fmtShortDate(worst.date)}</span>`:'—', 'neg',""],
+    ['Win rate', winRate.toFixed(1)+'%', winRate>=50?'pos':'neg',"",r ? `${wins.length} Wins · ${losses.length} Losses` : '—'],
+    ['Avg P&L / trade', fmtINR(avgPnl), avgPnl>=0?'pos':'neg',"",`Win: ${fmtINR(r.avgWin)}| Loss: ${fmtINR(r.avgLoss)}`],
+    ['Profit factor', r ? (isFinite(r.profitFactor)?r.profitFactor.toFixed(2):'∞') : '—', (r && r.profitFactor>=1.5)?'pos':'neg', "> 1.5 to 2.0 - gross wins heavily outpacing gross losses?", r && r.profitFactor >= 2 ? 'Elite Edge (>2.0)' : (r && r.profitFactor >= 1.5 ? 'Strong (>1.5)' : 'Needs Attention')],
+    ['Capital efficiency', capitalEff.toFixed(2)+'%', capitalEff>=0?'pos':'neg',"totalPnl/totalCapital*100",'Net P&L / Deployed Margin'],
+    ['Best trade', best?`${fmtINR(best.pnl)}<div class="stat-sub">${fmtShortDate3(best.date)} ${best.direction}</div>`:'—', 'pos',"",''],
+    ['Worst trade', worst?`${fmtINR(worst.pnl)}<div class="stat-sub">${fmtShortDate3(worst.date)} ${worst.direction}</div>`:'—', 'neg',"",''],
   ];
-  document.getElementById('statGrid').innerHTML = cards.map(([l,v,c,d])=>
-    `<div class="stat-card"><div class="label">${l}</div><div class="value ${c}" title="${d}">${v}</div></div>`
+  document.getElementById('statGrid').innerHTML = cards.map(([l,v,c,d,e])=>
+    `<div class="stat-card"><div class="label">${l}</div><div class="value ${c}" title="${d}">${v}</div><div class="stat-sub">${e}</div></div>`
   ).join('');
 
   if (r){
@@ -910,11 +1010,12 @@ function renderCalendarGrid(byMonth, months){
       const dayCells = week.map(cell=>{
         if (!cell) return `<div class="grid-cell empty"></div>`;
         const t = tradeByDate[cell.dateStr];
+        // console.log("t",t);
         if (!t) return `<div class="grid-cell no-trade"><div class="gc-day">${cell.day}</div><div class="gc-count">no trades</div></div>`;
         return `<div class="grid-cell has-trade" data-hoverable data-date="${cell.dateStr}" style="background:${cellColor(t.pnl)}">
-          <div class="gc-day">${cell.day}</div>
+          <div class="gc-day">${cell.day} <span class="tag ${t.direction}">${t.direction}</span> </div>
           <div class="gc-pnl ${t.pnl>=0?'pos':'neg'}">${fmtSigned(t.pnl)}</div>
-          <div class="gc-count">1 trade</div>
+          <div class="gc-count">${t.returnPct.toFixed(2)}%</div>
         </div>`;
       }).join('');
       const weekTrades = week.filter(c=>c && tradeByDate[c.dateStr]).map(c=>tradeByDate[c.dateStr]);
@@ -946,10 +1047,12 @@ document.getElementById('calViewToggle').addEventListener('click', function(){
 /* ---------------- Trade Log ---------------- */
 let sortKey = 'date', sortDir = -1;
 function currentFilteredTrades(){
-  const dir = document.getElementById('filterDir').value;
-  const result = document.getElementById('filterResult').value;
+  const dir = document.getElementById('filterDir').dataset.value;
+  const result = document.getElementById('filterResult').dataset.value;
+  const year = document.getElementById('filterYear').value;
   const search = document.getElementById('filterSearch').value.trim();
   let list = [...TRADES];
+  if (year !== 'all') list = list.filter(t=>t.date.slice(0,4) === year);
   if (dir !== 'all') list = list.filter(t=>t.direction===dir);
   if (result === 'win') list = list.filter(t=>t.pnl>0);
   if (result === 'loss') list = list.filter(t=>t.pnl<=0);
@@ -974,7 +1077,7 @@ function renderTradeTable(){
       <td>${starRating(t.rating?.entry)}</td>
       <td>${starRating(t.rating?.exit)}</td>
     </tr>
-    <tr class="detail-row" data-detail="${i}" style="display:none;"><td colspan="10">${renderDetail(t)}</td></tr>
+    <tr class="detail-row" data-detail="${i}" style="display:none;"><td colspan="10"><div class="detail-wrap">${renderDetail(t)}</div></td></tr>
   `).join('');
 
   tbody.querySelectorAll('.trade-row').forEach(row=>{
@@ -987,24 +1090,46 @@ function renderTradeTable(){
 function renderDetail(t){
   const strikes = (t.strikes||[]).map(s=>`
     <div class="strike-card">
-      <div class="sym">${s.symbol} ${s.strike}</div>
-      <div class="row"><span>Entry</span><span>${s.entry}</span></div>
-      <div class="row"><span>Exit</span><span>${s.exit}</span></div>
-      <div class="row"><span>Points</span><span class="${s.points>=0?'pos':'neg'}">${s.points}</span></div>
-      <div class="row"><span>Qty</span><span>${s.qty}</span></div>
-      <div class="row"><span>Days left</span><span>${s.daysLeft}</span></div>
+      <div class="strike-head">
+        <span class="strike-sym">${s.symbol} ${s.strike} ${t.direction}</span>
+        <span class="strike-meta">${s.daysLeft}D · ${s.qty} qty</span>
+      </div>
+      <div class="strike-stats">
+        <div><span class="ss-label">Entry</span><span class="ss-value">${s.entry}</span></div>
+        <div><span class="ss-label">Exit</span><span class="ss-value">${s.exit}</span></div>
+        <div><span class="ss-label">Points</span><span class="ss-value ${s.points>=0?'pos':'neg'}">${s.points>=0?'+':''}${s.points}</span></div>
+      </div>
     </div>
   `).join('');
+
   const ei = t.entryIndex||{}, xi = t.exitIndex||{};
+  const idxCard = (label, entryDisplay, exitDisplay, deltaDisplay, deltaNum) => `
+    <div class="idx-card">
+      <div class="idx-label">${label}</div>
+      <div class="idx-values"><span>${entryDisplay}</span><span class="idx-arrow">→</span><span>${exitDisplay}</span></div>
+      ${deltaDisplay!=null ? `<div class="idx-delta ${deltaNum>=0?'pos':'neg'}">${deltaNum>=0?'+':''}${deltaDisplay} ${deltaNum>=0?'▲':'▼'}</div>` : ''}
+    </div>`;
+
+  const niftyDelta = (xi.NIFTY??0) - (ei.NIFTY??0);
+  const bankDelta = (xi.BANK??0) - (ei.BANK??0);
+  const sensexDelta = (xi.SENSEX??0) - (ei.SENSEX??0);
+  const vixDelta = (parseFloat(xi.VIX)||0) - (parseFloat(ei.VIX)||0);
+  const oppEntry = ei.oppCapital||0, oppExit = xi.oppCapital||0;
+  const oppDelta = oppExit - oppEntry;
+  const oppLabel = t.direction==="CE" ? "PE " : "CE ";
+
   return `
+    <div class="detail-title">Strikes</div>
     <div class="strike-grid">${strikes}</div>
-    <div class="idx-row">
-      <span>NIFTY ${ei.NIFTY} → ${xi.NIFTY}</span>
-      <span>BANKNIFTY ${ei.BANK} → ${xi.BANK}</span>
-      <span>SENSEX ${ei.SENSEX} → ${xi.SENSEX}</span>
-      <span>VIX ${ei.VIX} → ${xi.VIX}</span>
-      <span>Opp. capital ${fmtINR(ei.oppCapital||0)} → ${fmtINR(xi.oppCapital||0)}</span>
-      ${t.rating?.potentialPnl!=null ? `<span>Potential P&amp;L ${fmtINR(t.rating.potentialPnl)}</span>` : ''}
+
+    <div class="detail-title">Market snapshot (entry → exit)</div>
+    <div class="idx-grid">
+      ${idxCard('NIFTY', ei.NIFTY, xi.NIFTY, niftyDelta, niftyDelta)}
+      ${idxCard('BANKNIFTY', ei.BANK, xi.BANK, bankDelta, bankDelta)}
+      ${idxCard('SENSEX', ei.SENSEX, xi.SENSEX, sensexDelta, sensexDelta)}
+      ${idxCard('VIX', ei.VIX, xi.VIX, vixDelta.toFixed(2), vixDelta)}
+      ${idxCard(oppLabel, fmtINR(oppEntry), fmtINR(oppExit), fmtINR(Math.abs(oppDelta)), oppDelta)}
+      ${t.rating?.potentialPnl!=null ? `<div class="idx-card"><div class="idx-label">Potential P&amp;L</div><div class="idx-values ${t.rating.potentialPnl>=0?'pos':'neg'}">${fmtINR(t.rating.potentialPnl)}</div></div>` : ''}
     </div>
   `;
 }
@@ -1016,7 +1141,20 @@ document.querySelectorAll('#tradeTable thead th').forEach(th=>{
     renderTradeTable();
   });
 });
-['filterDir','filterResult','filterSearch'].forEach(id=>{
+function setupSegToggle(id){
+  const group = document.getElementById(id);
+  group.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      group.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      group.dataset.value = btn.dataset.value;
+      renderTradeTable();
+    });
+  });
+}
+setupSegToggle('filterDir');
+setupSegToggle('filterResult');
+['filterSearch','filterYear'].forEach(id=>{
   document.getElementById(id).addEventListener('input', renderTradeTable);
 });
 
@@ -1029,10 +1167,21 @@ function renderAnalytics(){
 
   makeChart('dirChart', {
     type:'bar',
-    data:{ labels:['CE','PE'], datasets:[
-      { label:'Win rate %', data:[winRateOf(ce), winRateOf(pe)], backgroundColor:['#C99B4A','#6E7DAB'] }
+    data:{ labels:['Win Rate'], datasets:[
+      { label:`CE (${winRateOf(ce).toFixed(0)}%)`, data:[winRateOf(ce)], backgroundColor:'#f59e0c' },
+      { label:`PE (${winRateOf(pe).toFixed(0)}%)`, data:[winRateOf(pe)], backgroundColor:'#14b07b' }
     ]},
-    options:{ plugins:{legend:{display:false}}, scales:{ x:{ticks:{color:themeTick()}, grid:{display:false}}, y:{ticks:{color:themeTick()}, grid:{color:themeGridColor()}, max:100} } }
+    options:{
+      indexAxis:'y',
+      plugins:{
+        legend:{ display:true, position:'bottom', labels:{ color:themeTick(), boxWidth:12, padding:14 } },
+        tooltip:{ callbacks:{ label: (item)=> `${item.dataset.label.split(' (')[0]}: ${item.parsed.x.toFixed(1)}%` } }
+      },
+      scales:{
+        x:{ stacked:true, ticks:{color:themeTick()}, grid:{color:themeGridColor()} },
+        y:{ stacked:true, ticks:{display:false}, grid:{display:false} }
+      }
+    }
   });
 
   // day of week
@@ -1077,8 +1226,9 @@ function renderAnalytics(){
   }));
   const symLabels = Object.keys(symTotals);
   makeChart('symbolChart', {
-    type:'pie',
-    data:{ labels:symLabels, datasets:[{ data:symLabels.map(k=>symTotals[k]), backgroundColor:['#C99B4A','#6E7DAB','#3FA672','#C4544A'] }]},
+    type:'doughnut',
+    // data:{ labels:symLabels, datasets:[{ data:symLabels.map(k=>symTotals[k]), backgroundColor:['#C99B4A','#6E7DAB','#3FA672','#C4544A'] }]},
+    data:{ labels:symLabels, datasets:[{ data:symLabels.map(k=>symTotals[k]), backgroundColor:['#f59e0c','#14b07b','#5657CE','#C4544A'] }]},
     options:{ plugins:{legend:{position:'bottom', labels:{color:themeTick()}}} }
   });
 
