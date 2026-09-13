@@ -163,7 +163,7 @@
   .stat-card .value{ font-family:'IBM Plex Mono', monospace; font-size:20px; font-weight:500; }
   .stat-card .value.pos{ color:var(--green); }
   .stat-card .value.neg{ color:var(--red); }
-  .stat-card .stat-sub{ font-size:12px; color:var(--muted); font-weight:400; margin-left:4px; margin-top: 2px;}
+  .stat-card .stat-sub{ font-size:12px; color:var(--muted); font-weight:400; margin-top: 2px;}
 
   .two-col{ display:grid; grid-template-columns:1.3fr 1fr; gap:20px; }
   @media (max-width:900px){ .two-col{ grid-template-columns:1fr; } }
@@ -803,7 +803,7 @@ function renderOverview(){
 
   const cards = [
     ['Win rate', winRate.toFixed(1)+'%', winRate>=50?'pos':'neg',"",r ? `${wins.length} Wins · ${losses.length} Losses` : '—'],
-    ['Avg P&L / trade', fmtINR(avgPnl), avgPnl>=0?'pos':'neg',"",`Win: ${fmtINR(r.avgWin)}| Loss: ${fmtINR(r.avgLoss)}`],
+    ['Avg P&L / trade', fmtINR(avgPnl), avgPnl>=0?'pos':'neg',"",`Win: ${fmtINR(r.avgWin)} | Loss: ${fmtINR(r.avgLoss)}`],
     ['Profit factor', r ? (isFinite(r.profitFactor)?r.profitFactor.toFixed(2):'∞') : '—', (r && r.profitFactor>=1.5)?'pos':'neg', "> 1.5 to 2.0 - gross wins heavily outpacing gross losses?", r && r.profitFactor >= 2 ? 'Elite Edge (>2.0)' : (r && r.profitFactor >= 1.5 ? 'Strong (>1.5)' : 'Needs Attention')],
     ['Capital efficiency', capitalEff.toFixed(2)+'%', capitalEff>=0?'pos':'neg',"totalPnl/totalCapital*100",'Net P&L / Deployed Margin'],
     ['Best trade', best?`${fmtINR(best.pnl)}<div class="stat-sub">${fmtShortDate3(best.date)} ${best.direction}</div>`:'—', 'pos',"",''],
